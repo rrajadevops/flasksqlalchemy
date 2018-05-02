@@ -7,9 +7,14 @@ from security import authenticate, identity
 from resources.user import UserRegister
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRCK_MODIFICATION'] = Flase
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Flase
 app.secret_key = 'raja'
 api = Api(app)
+
+@app.before_first_request
+def create_db():
+    db.create_all()
 
 jwt = JWT(app, authenticate, identity) #/auth
 
